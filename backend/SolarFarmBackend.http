@@ -1,0 +1,6 @@
+@SolarFarmBackend_HostAddress = http://localhost:8000
+
+GET {{SolarFarmBackend_HostAddress}}/test/
+Accept: application/json
+
+###
