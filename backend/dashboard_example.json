@@ -1,0 +1,114 @@
+[
+  {
+    "deviceName": "device4",
+    "dataType": "PanelTempSensor",
+    "timestamp": "2025-11-14T20:54:02.5616786+00:00",
+    "latest": 19.8687,
+    "average": 20.4397
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "IrradianceSensor",
+    "timestamp": "2025-11-14T20:54:02.5119724+00:00",
+    "latest": 0.16229,
+    "average": 0.1813235
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "IrradianceSensor",
+    "timestamp": "2025-11-14T20:54:02.527141+00:00",
+    "latest": 0.16229,
+    "average": 0.1813235
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "PanelTempSensor",
+    "timestamp": "2025-11-14T20:54:02.5156781+00:00",
+    "latest": 19.8687,
+    "average": 20.4397
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "IrradianceSensor",
+    "timestamp": "2025-11-14T20:54:02.55744+00:00",
+    "latest": 0.16229,
+    "average": 0.1813235
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "AirTempSensor",
+    "timestamp": "2025-11-14T20:54:02.5346426+00:00",
+    "latest": 16.4916,
+    "average": 17.25295
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "PowerMeter",
+    "timestamp": "2025-11-14T20:54:02.5384909+00:00",
+    "latest": 811.448,
+    "average": 906.61575
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "PanelTempSensor",
+    "timestamp": "2025-11-14T20:54:02.5457216+00:00",
+    "latest": 19.8687,
+    "average": 20.4397
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "PanelTempSensor",
+    "timestamp": "2025-11-14T20:54:02.530769+00:00",
+    "latest": 19.8687,
+    "average": 20.4397
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "AirTempSensor",
+    "timestamp": "2025-11-14T20:54:02.5195293+00:00",
+    "latest": 16.4916,
+    "average": 17.25295
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "IrradianceSensor",
+    "timestamp": "2025-11-14T20:54:02.5421087+00:00",
+    "latest": 0.16229,
+    "average": 0.1813235
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "PowerMeter",
+    "timestamp": "2025-11-14T20:54:02.5231659+00:00",
+    "latest": 811.448,
+    "average": 906.61575
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "AirTempSensor",
+    "timestamp": "2025-11-14T20:54:02.5494219+00:00",
+    "latest": 16.4916,
+    "average": 17.25295
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "PowerMeter",
+    "timestamp": "2025-11-14T20:54:02.5532499+00:00",
+    "latest": 811.448,
+    "average": 906.61575
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "PowerMeter",
+    "timestamp": "2025-11-14T20:54:02.5696131+00:00",
+    "latest": 811.448,
+    "average": 906.61575
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "AirTempSensor",
+    "timestamp": "2025-11-14T20:54:02.5657087+00:00",
+    "latest": 16.4916,
+    "average": 17.25295
+  }
+]

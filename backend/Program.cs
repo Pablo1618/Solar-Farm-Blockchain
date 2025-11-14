@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using MQTTnet;
+using Backend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,20 +34,6 @@ builder.Services.AddSingleton<IMqttClient>(sp =>
     var factory = new MqttClientFactory();
     var client = factory.CreateMqttClient();
 
-    var mqttHost = Environment.GetEnvironmentVariable("MQTT_HOST") ?? "localhost";
-    var mqttPort = int.Parse(Environment.GetEnvironmentVariable("MQTT_PORT") ?? "1883");
-    var mqttClientId = Environment.GetEnvironmentVariable("MQTT_CLIENT_ID") ?? "MySimpleApi";
-
-    var optionsBuilder = new MqttClientOptionsBuilder()
-        .WithClientId(mqttClientId)
-        .WithTcpServer(mqttHost, mqttPort)
-        .WithCleanSession();
-
-    var options = optionsBuilder.Build();
-
-    client.ConnectAsync(options, CancellationToken.None).GetAwaiter().GetResult();
-    Console.WriteLine($"Connected to MQTT broker at {mqttHost}:{mqttPort}");
-
     return client;
 });
 
@@ -54,16 +41,23 @@ builder.Services.AddSingleton<BackendService>();
 
 var app = builder.Build();
 
+// Initialize BackendService to force init mongo and mqtt
+var backend = app.Services.GetRequiredService<BackendService>();
+
 app.UseHttpsRedirection();
 
-app.MapGet("/test", (BackendService backend) =>
+app.MapGet("/dashboard", (BackendService backend) =>
 {
-    var testItem = new Test();
-    backend.TestCollection.InsertOne(testItem);
-    var allItems = backend.TestCollection.Find(_ => true).ToList();
-    return allItems;
+    return backend.GetDashboardData();
 })
-.WithName("Test")
+.WithName("Dashboard")
+.WithOpenApi();
+
+app.MapGet("/data", (BackendService backend) =>
+{
+    
+})
+.WithName("Data")
 .WithOpenApi();
 
 app.Run();
