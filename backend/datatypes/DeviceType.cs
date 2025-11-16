@@ -1,5 +1,5 @@
 
-namespace Backend.Model
+namespace Backend.DataTypes
 {
     public enum DeviceType
     {

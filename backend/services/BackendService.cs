@@ -1,8 +1,9 @@
 using System.Text;
 using Backend.Dtos;
-using Backend.Model;
+using Backend.DataTypes;
 using MongoDB.Driver;
 using MQTTnet;
+using System.Text.Json;
 
 namespace Backend;
 
@@ -78,6 +79,80 @@ class BackendService
 
         return dashboardData;
     }
+
+    public async Task<IEnumerable<QueryDataDto>> GetDataAsync(QueryParams query)
+    {
+        var filter = Builders<FotovoltanicData>.Filter.Empty;
+
+        if (!string.IsNullOrWhiteSpace(query.DeviceName))
+            filter &= Builders<FotovoltanicData>.Filter.Eq(x => x.DeviceName, query.DeviceName);
+
+        if (query.DataType.HasValue)
+            filter &= Builders<FotovoltanicData>.Filter.Eq(x => x.DataType, query.DataType.Value);
+
+        if (query.From.HasValue)
+            filter &= Builders<FotovoltanicData>.Filter.Gte(x => x.Timestamp, query.From.Value);
+
+        if (query.To.HasValue)
+            filter &= Builders<FotovoltanicData>.Filter.Lte(x => x.Timestamp, query.To.Value);
+
+        var find = FotovoltanicDataCollection.Find(filter);
+
+        if (!string.IsNullOrWhiteSpace(query.SortBy))
+        {
+            var sort = query.Desc
+                ? Builders<FotovoltanicData>.Sort.Descending(query.SortBy)
+                : Builders<FotovoltanicData>.Sort.Ascending(query.SortBy);
+
+            find = find.Sort(sort);
+        }
+
+        if (query.Skip.HasValue)
+            find = find.Skip(query.Skip.Value);
+
+        if (query.Limit.HasValue)
+            find = find.Limit(query.Limit.Value);
+
+        var results = await find.ToListAsync();
+
+        return results.Select(x => new QueryDataDto
+            {
+                DeviceName = x.DeviceName,
+                DataType = x.DataType.ToString(),
+                Timestamp = x.Timestamp,
+                Data = x.Data
+            });
+    }
+
+    public async Task<string> GetDataJsonAsync(QueryParams query)
+    {
+        var data = await GetDataAsync(query);
+        return JsonSerializer.Serialize(data, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+    }
+
+    public async Task<string> GetDataCsvAsync(QueryParams query)
+    {
+        var data = await GetDataAsync(query);
+        
+        var sb = new StringBuilder();
+        sb.AppendLine("DeviceName;DataType;Timestamp;Data");
+
+        foreach (var x in data)
+        {
+            sb.AppendLine(
+                $"{x.DeviceName};" +
+                $"{x.DataType};" +
+                $"{x.Timestamp:O};" +
+                $"{x.Data}"
+            );
+        }
+
+        return sb.ToString();
+    }
+
 
     private async Task OnMqttMessageReceived(MqttApplicationMessageReceivedEventArgs e)
     {

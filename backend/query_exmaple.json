@@ -1,0 +1,482 @@
+[
+  {
+    "deviceName": "device1",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:49.776296+00:00",
+    "data": 0.748956
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:49.86056+00:00",
+    "data": 37.4687
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:49.8623744+00:00",
+    "data": 39.9582
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:49.8636501+00:00",
+    "data": 3744.78
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:49.865073+00:00",
+    "data": 0.748956
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:49.8662859+00:00",
+    "data": 37.4687
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:49.8674801+00:00",
+    "data": 39.9582
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:49.8686463+00:00",
+    "data": 3744.78
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:49.8699112+00:00",
+    "data": 0.748956
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:49.8711784+00:00",
+    "data": 37.4687
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:49.8721092+00:00",
+    "data": 39.9582
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:49.8731045+00:00",
+    "data": 3744.78
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:49.8743083+00:00",
+    "data": 0.748956
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:49.8754243+00:00",
+    "data": 37.4687
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:49.8781937+00:00",
+    "data": 39.9582
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:49.8799187+00:00",
+    "data": 3744.78
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:54.4871945+00:00",
+    "data": 0.107955
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:54.49074+00:00",
+    "data": 18.2387
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:54.4950895+00:00",
+    "data": 14.3182
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:54.4987329+00:00",
+    "data": 539.776
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:54.5025415+00:00",
+    "data": 0.107955
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:54.5065371+00:00",
+    "data": 18.2387
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:54.5103123+00:00",
+    "data": 14.3182
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:54.5135615+00:00",
+    "data": 539.776
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:54.5166893+00:00",
+    "data": 0.107955
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:54.5200885+00:00",
+    "data": 18.2387
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:54.5233669+00:00",
+    "data": 14.3182
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:54.5269895+00:00",
+    "data": 539.776
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:54.5303974+00:00",
+    "data": 0.107955
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:54.5338258+00:00",
+    "data": 18.2387
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:54.537211+00:00",
+    "data": 14.3182
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:54.5403285+00:00",
+    "data": 539.776
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:55.547925+00:00",
+    "data": 0.382432
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:55.5522392+00:00",
+    "data": 26.473
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:55.5554935+00:00",
+    "data": 25.2973
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:55.5588285+00:00",
+    "data": 1912.16
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:55.5626437+00:00",
+    "data": 0.382432
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:55.5663056+00:00",
+    "data": 26.473
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:55.5696111+00:00",
+    "data": 25.2973
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:55.5730388+00:00",
+    "data": 1912.16
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:55.5764101+00:00",
+    "data": 0.382432
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:55.5798037+00:00",
+    "data": 26.473
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:55.5836526+00:00",
+    "data": 25.2973
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:55.5871571+00:00",
+    "data": 1912.16
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:55.591008+00:00",
+    "data": 0.382432
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:55.594621+00:00",
+    "data": 26.473
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:55.5980226+00:00",
+    "data": 25.2973
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:55.6011586+00:00",
+    "data": 1912.16
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:56.6064491+00:00",
+    "data": 0.303733
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:56.6104938+00:00",
+    "data": 24.112
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:56.614312+00:00",
+    "data": 22.1493
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:56.6180758+00:00",
+    "data": 1518.66
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:56.6230938+00:00",
+    "data": 0.303733
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:56.6273146+00:00",
+    "data": 24.112
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:56.6314977+00:00",
+    "data": 22.1493
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:56.6352301+00:00",
+    "data": 1518.66
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:56.6392559+00:00",
+    "data": 0.303733
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:56.6431715+00:00",
+    "data": 24.112
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:56.646768+00:00",
+    "data": 22.1493
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:56.6502764+00:00",
+    "data": 1518.66
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:56.6538106+00:00",
+    "data": 0.303733
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:56.6571448+00:00",
+    "data": 24.112
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:56.6603492+00:00",
+    "data": 22.1493
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:56.6643965+00:00",
+    "data": 1518.66
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:57.6693287+00:00",
+    "data": 0.549036
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:57.6738837+00:00",
+    "data": 31.4711
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:57.6785108+00:00",
+    "data": 31.9614
+  },
+  {
+    "deviceName": "device1",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:57.6842415+00:00",
+    "data": 2745.18
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:57.6900646+00:00",
+    "data": 0.549036
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:57.6943037+00:00",
+    "data": 31.4711
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:57.698832+00:00",
+    "data": 31.9614
+  },
+  {
+    "deviceName": "device2",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:57.7022182+00:00",
+    "data": 2745.18
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:57.7060857+00:00",
+    "data": 0.549036
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:57.7113254+00:00",
+    "data": 31.4711
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:57.7160485+00:00",
+    "data": 31.9614
+  },
+  {
+    "deviceName": "device3",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:57.7206213+00:00",
+    "data": 2745.18
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Irradiance",
+    "timestamp": "2025-11-16T18:47:57.724437+00:00",
+    "data": 0.549036
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "PanelTemp",
+    "timestamp": "2025-11-16T18:47:57.7279215+00:00",
+    "data": 31.4711
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "AirTemp",
+    "timestamp": "2025-11-16T18:47:57.731648+00:00",
+    "data": 31.9614
+  },
+  {
+    "deviceName": "device4",
+    "dataType": "Power",
+    "timestamp": "2025-11-16T18:47:57.7358429+00:00",
+    "data": 2745.18
+  }
+]

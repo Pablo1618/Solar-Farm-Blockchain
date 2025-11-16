@@ -1,12 +1,9 @@
-using Backend.DataTypes;
-
 namespace Backend.Dtos;
 
-public class DashboardDataDto
+public class QueryDataDto
 {
     public string DeviceName { get; set; }
     public string DataType { get; set; }
     public DateTimeOffset Timestamp { get; set; }
-    public double Latest { get; set; }
-    public double Average { get; set; }
+    public double Data { get; set; }
 }

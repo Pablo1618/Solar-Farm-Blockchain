@@ -1,6 +1,54 @@
 @SolarFarmBackend_HostAddress = http://localhost:8000
 
-GET {{SolarFarmBackend_HostAddress}}/dashboard/
+GET {{SolarFarmBackend_HostAddress}}/dashboard
+Accept: application/json
+
+###
+
+GET {{SolarFarmBackend_HostAddress}}/query
+Accept: application/json
+
+###
+
+# name of dataType also works instead of number
+
+GET {{SolarFarmBackend_HostAddress}}/query?deviceName=device4&dataType=2
+
+Accept: application/json
+
+###
+
+# + in timezone has to be URL encoded as %2B
+# sortBy has to match the case exactly to FotovoltanicData datatype (so always start with upper case)
+
+GET {{SolarFarmBackend_HostAddress}}/query?from=2025-11-16T18:27:02.4275088%2B00:00&sortBy=Timestamp&desc=true
+Accept: application/json
+
+###
+
+GET {{SolarFarmBackend_HostAddress}}/query?sortBy=Timestamp&desc=true&limit=1
+Accept: application/json
+
+###
+
+GET {{SolarFarmBackend_HostAddress}}/query?sortBy=Timestamp&desc=true&limit=1&skip=1
+Accept: application/json
+
+###
+
+GET {{SolarFarmBackend_HostAddress}}/query?sortBy=Timestamp&desc=true&limit=5
+Accept: application/json
+
+###
+
+GET {{SolarFarmBackend_HostAddress}}/query?deviceName=device4&dataType=Irradiance
+
+Accept: application/json
+
+###
+
+GET {{SolarFarmBackend_HostAddress}}/csv?deviceName=device4&dataType=2
+
 Accept: application/json
 
 ###

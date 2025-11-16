@@ -1,6 +1,7 @@
 using MongoDB.Driver;
 using MQTTnet;
 using Backend;
+using Backend.DataTypes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,16 +49,25 @@ app.UseHttpsRedirection();
 
 app.MapGet("/dashboard", (BackendService backend) =>
 {
-    return backend.GetDashboardData();
+    return Results.Ok(backend.GetDashboardData());
 })
 .WithName("Dashboard")
 .WithOpenApi();
 
-app.MapGet("/data", (BackendService backend) =>
+app.MapGet("/query", async (BackendService backend,[AsParameters] QueryParams queryParams) =>
 {
-    
+    var queryResult = await backend.GetDataAsync(queryParams);
+    return Results.Ok(queryResult);
 })
-.WithName("Data")
+.WithName("Query")
+.WithOpenApi();
+
+app.MapGet("/csv", async (BackendService backend,[AsParameters] QueryParams queryParams) =>
+{
+    var queryResult = await backend.GetDataCsvAsync(queryParams);
+    return Results.Text(queryResult, "text/csv", System.Text.Encoding.UTF8);
+})
+.WithName("Csv")
 .WithOpenApi();
 
 app.Run();
