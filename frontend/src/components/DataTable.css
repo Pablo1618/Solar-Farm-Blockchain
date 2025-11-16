@@ -1,0 +1,163 @@
+.data-table-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.table-info {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e8f5e9;
+}
+
+.record-count {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4a7c2c;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.data-table thead {
+  background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+  color: white;
+}
+
+.data-table thead th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.85rem;
+  border-bottom: 2px solid #6ba83e;
+}
+
+.data-table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.data-table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.data-table tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e8f5e9;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(107, 168, 62, 0.08);
+  transform: scale(1.01);
+}
+
+.data-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.data-table tbody td {
+  padding: 1rem;
+  color: #2d5016;
+}
+
+.timestamp-cell {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #4a7c2c;
+  white-space: nowrap;
+}
+
+.type-cell {
+  font-weight: 600;
+  color: #2d5016;
+}
+
+.instance-cell {
+  text-align: center;
+}
+
+.instance-badge {
+  background: linear-gradient(135deg, #4a7c2c 0%, #6ba83e 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(74, 124, 44, 0.3);
+  display: inline-block;
+}
+
+.value-cell {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2d5016;
+  text-align: right;
+}
+
+.unit-cell {
+  color: #6ba83e;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #4a7c2c;
+}
+
+.no-data p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .data-table-container {
+    padding: 1rem;
+  }
+
+  .data-table {
+    font-size: 0.85rem;
+  }
+
+  .data-table thead th,
+  .data-table tbody td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .timestamp-cell {
+    font-size: 0.8rem;
+  }
+
+  .value-cell {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-wrapper {
+    border-radius: 8px;
+  }
+
+  .data-table thead th,
+  .data-table tbody td {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,75 @@
+.charts-page-container {
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+}
+
+.charts-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.charts-header h1 {
+    color: #2d5016;
+    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.charts-subtitle {
+    color: #4a7c2c;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .charts-page-container {
+        padding: 1rem;
+    }
+
+    .charts-header {
+        padding: 1.5rem;
+    }
+
+    .charts-header h1 {
+        font-size: 2rem;
+    }
+
+    .charts-subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* Pozostawiamy stare style dla innych stron */
+.page-container {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-content {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    max-width: 600px;
+    margin: 2rem;
+}
+
+.page-content h1 {
+    color: #2d5016;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.page-content p {
+    color: #4a7c2c;
+    font-size: 1.2rem;
+}
