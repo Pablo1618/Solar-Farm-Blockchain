@@ -1,0 +1,10 @@
+.app {
+  min-height: 100vh;
+  background: linear-gradient(rgba(45, 80, 22, 0.7), rgba(74, 124, 44, 0.7)),
+    url('https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072') center/cover no-repeat fixed;
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+}
