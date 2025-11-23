@@ -1,8 +1,8 @@
 ﻿using Backend.DataTypes;
+using Backend.Dtos;
 using Microsoft.Extensions.Logging;
 using MQTTnet;
-using System.Globalization;
-using System.Text;
+using System.Text.Json;
 
 namespace DataGeneration
 {
@@ -14,10 +14,15 @@ namespace DataGeneration
         {
             ArgumentNullException.ThrowIfNull(data);
             var topic = $"fotovolt/{data.DeviceName}/{data.DataType}";
-            var payload = Encoding.UTF8.GetBytes(data.Data.ToString("G", CultureInfo.InvariantCulture));
+            var payload = new SensorMessagePayload
+            {
+                Data = data.Data,
+                Timestamp = data.Timestamp
+            };
+            var serializedPayload = JsonSerializer.SerializeToUtf8Bytes(payload);
             var message = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
-                .WithPayload(payload)
+                .WithPayload(serializedPayload)
                 .Build();
             await _client.PublishAsync(message, cancellationToken).ConfigureAwait(false);
             if (_logger.IsEnabled(LogLevel.Debug))

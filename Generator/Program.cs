@@ -219,6 +219,6 @@ class Program
     }
     private static string GetWorkerName(string deviceName, DeviceType deviceType)
     {
-        return $"{deviceName}_{deviceType}";
+        return $"{deviceName}/{deviceType}";
     }
 }

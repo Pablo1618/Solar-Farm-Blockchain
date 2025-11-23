@@ -156,6 +156,8 @@ class BackendService
 
     private async Task OnMqttMessageReceived(MqttApplicationMessageReceivedEventArgs e)
     {
+        var payload = JsonSerializer.Deserialize<SensorMessagePayload>(
+            Encoding.UTF8.GetString(e.ApplicationMessage.Payload))!;
         FotovoltanicData data = new FotovoltanicData
         {
             DeviceName = e.ApplicationMessage.Topic.Split('/')[1],
@@ -167,8 +169,8 @@ class BackendService
                 "Power" => DeviceType.Power,
                 _ => throw new InvalidOperationException("Unknown data type in topic")
             },
-            Timestamp = DateTimeOffset.UtcNow,
-            Data = double.Parse(Encoding.UTF8.GetString(e.ApplicationMessage.Payload))
+            Timestamp = payload.Timestamp,
+            Data = payload.Data
         };
 
         await FotovoltanicDataCollection.InsertOneAsync(data);
