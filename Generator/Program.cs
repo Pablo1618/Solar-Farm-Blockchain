@@ -1,6 +1,4 @@
-﻿using Backend.DataTypes;
-using DataGeneration;
-using Microsoft.Extensions.Logging;
+﻿using DataGeneration;
 using MQTTnet;
 
 class Program
@@ -180,11 +178,10 @@ class Program
     {
         try
         {
-            var logger = new LoggerFactory().CreateLogger<MqttPublisher>();
             var device = DeviceFactory.Create(deviceName, deviceType);
             var generator = new FotovoltanicDataGenerator(device, startTimestamp, interval, minValue, maxValue);
             var timer = new PeriodicTimer(interval);
-            var publisher = new MqttPublisher(mqttClient, logger);
+            var publisher = new MqttPublisher(mqttClient);
             while (await timer.WaitForNextTickAsync(cancellationToken))
             {
                 var data = generator.Generate();
@@ -204,10 +201,9 @@ class Program
     {
         try
         {
-            var logger = new LoggerFactory().CreateLogger<MqttPublisher>();
             var device = DeviceFactory.Create(deviceName, deviceType);
             var generator = new FotovoltanicDataGenerator(device, timestamp, TimeSpan.Zero, value, value);
-            var publisher = new MqttPublisher(mqttClient, logger);
+            var publisher = new MqttPublisher(mqttClient);
             var data = generator.Generate();
             await publisher.PublishAsync(data, cancellationToken);
         }

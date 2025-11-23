@@ -1,5 +1,4 @@
-﻿using Backend.DataTypes;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 
 namespace DataGeneration
 {
