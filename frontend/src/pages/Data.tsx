@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
-import { useSensors } from '../context/useSensors';
+import { useState, useEffect, useCallback } from 'react';
 import type { SensorType } from '../types/sensor.types';
+import { SENSOR_TYPES } from '../types/sensor.types';
 import { getSensorDisplayName, getSensorUnit } from '../utils/sensorUtils';
 import DataFilters from '../components/DataFilters';
 import DataTable from '../components/DataTable';
@@ -9,14 +9,12 @@ import './Data.css';
 interface DataTableRow {
   id: string;
   type: SensorType;
-  instance: number;
+  deviceName: string;
   value: number;
   timestamp: number;
 }
 
 function Data() {
-  const { sensors } = useSensors();
-
   const now = new Date();
   const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
@@ -32,7 +30,12 @@ function Data() {
   const [dateFrom, setDateFrom] = useState(formatDateForInput(oneHourAgo));
   const [dateTo, setDateTo] = useState(formatDateForInput(now));
   const [sensorType, setSensorType] = useState<SensorType | 'all'>('all');
-  const [sensorInstance, setSensorInstance] = useState<number | 'all'>('all');
+  const [sensorInstance, setSensorInstance] = useState<string | 'all'>('all');
+  const [sortDesc, setSortDesc] = useState(true);
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState<DataTableRow[]>([]);
+  const [loading, setLoading] = useState(false);
+  const pageSize = 100;
 
   const handleReset = () => {
     const newNow = new Date();
@@ -41,58 +44,99 @@ function Data() {
     setDateTo(formatDateForInput(newNow));
     setSensorType('all');
     setSensorInstance('all');
+    setSortDesc(true);
+    setPage(1);
   };
 
-  const filteredData = useMemo(() => {
-    const dateFromTimestamp = new Date(dateFrom).getTime();
-    const dateToTimestamp = new Date(dateTo).getTime();
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
 
-    const allReadings: DataTableRow[] = [];
+      const fromDate = new Date(dateFrom);
+      const toDate = new Date(dateTo);
 
-    sensors.forEach((sensor) => {
-      sensor.readings.forEach((reading) => {
-        if (reading.timestamp < dateFromTimestamp || reading.timestamp > dateToTimestamp) {
-          return;
+      params.append('from', fromDate.toISOString());
+      params.append('to', toDate.toISOString());
+      params.append('sortBy', 'Timestamp');
+      params.append('desc', sortDesc.toString());
+      params.append('limit', pageSize.toString());
+      params.append('skip', ((page - 1) * pageSize).toString());
+
+      if (sensorInstance !== 'all') {
+        params.append('deviceName', sensorInstance);
+      }
+
+      if (sensorType !== 'all') {
+        let backendType = '';
+        switch (sensorType) {
+          case SENSOR_TYPES.SOLAR_RADIATION: backendType = 'Irradiance'; break;
+          case SENSOR_TYPES.PANEL_TEMPERATURE: backendType = 'PanelTemp'; break;
+          case SENSOR_TYPES.AIR_TEMPERATURE: backendType = 'AirTemp'; break;
+          case SENSOR_TYPES.POWER_GENERATION: backendType = 'Power'; break;
+        }
+        if (backendType) {
+          params.append('dataType', backendType);
+        }
+      }
+
+      const response = await fetch(`/query?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const result = await response.json();
+
+      const mappedData: DataTableRow[] = result.map((item: any) => {
+        let type: SensorType = SENSOR_TYPES.SOLAR_RADIATION;
+        switch (item.dataType) {
+          case 'IrradianceSensor': case 'Irradiance': type = SENSOR_TYPES.SOLAR_RADIATION; break;
+          case 'PanelTempSensor': case 'PanelTemp': type = SENSOR_TYPES.PANEL_TEMPERATURE; break;
+          case 'AirTempSensor': case 'AirTemp': type = SENSOR_TYPES.AIR_TEMPERATURE; break;
+          case 'PowerMeter': case 'Power': type = SENSOR_TYPES.POWER_GENERATION; break;
         }
 
-        if (sensorType !== 'all' && sensor.type !== sensorType) {
-          return;
-        }
-
-        if (sensorInstance !== 'all' && sensor.instance !== sensorInstance) {
-          return;
-        }
-
-        allReadings.push({
-          id: sensor.id,
-          type: sensor.type,
-          instance: sensor.instance,
-          value: reading.value,
-          timestamp: reading.timestamp,
-        });
+        return {
+          id: `${type}_${item.deviceName}_${item.timestamp}`,
+          type,
+          deviceName: item.deviceName,
+          value: item.data || item.latest,
+          timestamp: new Date(item.timestamp).getTime(),
+        };
       });
-    });
 
-    return allReadings.sort((a, b) => b.timestamp - a.timestamp);
-  }, [sensors, dateFrom, dateTo, sensorType, sensorInstance]);
+      setData(mappedData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [dateFrom, dateTo, sensorType, sensorInstance, sortDesc, page]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchData();
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [fetchData]);
 
   const exportToCSV = () => {
-    if (filteredData.length === 0) {
+    if (data.length === 0) {
       alert('Brak danych do eksportu');
       return;
     }
 
-    const headers = ['Data i czas', 'Typ czujnika', 'Instancja', 'Wartość', 'Jednostka'];
+    const headers = ['Data i czas', 'Typ czujnika', 'Urządzenie', 'Wartość', 'Jednostka'];
     const csvRows = [headers.join(',')];
 
-    filteredData.forEach((row) => {
+    data.forEach((row) => {
       const date = new Date(row.timestamp).toLocaleString('pl-PL');
       const type = getSensorDisplayName(row.type);
-      const instance = row.instance;
       const value = row.value.toFixed(2);
       const unit = getSensorUnit(row.type);
 
-      csvRows.push(`"${date}","${type}",${instance},${value},"${unit}"`);
+      csvRows.push(`"${date}","${type}","${row.deviceName}",${value},"${unit}"`);
     });
 
     const csvContent = csvRows.join('\n');
@@ -109,17 +153,17 @@ function Data() {
   };
 
   const exportToJSON = () => {
-    if (filteredData.length === 0) {
+    if (data.length === 0) {
       alert('Brak danych do eksportu');
       return;
     }
 
-    const jsonData = filteredData.map((row) => ({
+    const jsonData = data.map((row) => ({
       dataICzas: new Date(row.timestamp).toLocaleString('pl-PL'),
       timestamp: row.timestamp,
       typCzujnika: getSensorDisplayName(row.type),
       typCzujnikaKod: row.type,
-      instancja: row.instance,
+      urzadzenie: row.deviceName,
       wartosc: row.value,
       jednostka: getSensorUnit(row.type),
     }));
@@ -151,14 +195,14 @@ function Data() {
         dateTo={dateTo}
         sensorType={sensorType}
         sensorInstance={sensorInstance}
-        onDateFromChange={setDateFrom}
-        onDateToChange={setDateTo}
-        onSensorTypeChange={setSensorType}
-        onSensorInstanceChange={setSensorInstance}
+        onDateFromChange={(d) => { setDateFrom(d); setPage(1); }}
+        onDateToChange={(d) => { setDateTo(d); setPage(1); }}
+        onSensorTypeChange={(t) => { setSensorType(t); setPage(1); }}
+        onSensorInstanceChange={(i) => { setSensorInstance(i); setPage(1); }}
         onReset={handleReset}
       />
 
-      {filteredData.length > 0 && (
+      {data.length > 0 && (
         <div className="export-buttons">
           <button onClick={exportToCSV} className="export-button csv-button">
             📥 Eksportuj do CSV
@@ -169,7 +213,33 @@ function Data() {
         </div>
       )}
 
-      <DataTable data={filteredData} />
+      {loading ? (
+        <div className="loading-indicator">Ładowanie danych...</div>
+      ) : (
+        <DataTable
+          data={data}
+          sortDesc={sortDesc}
+          onSortToggle={() => setSortDesc(!sortDesc)}
+        />
+      )}
+
+      <div className="pagination-controls" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
+        <button
+          onClick={() => setPage(p => Math.max(1, p - 1))}
+          disabled={page === 1 || loading}
+          className="filter-button"
+        >
+          &lt; Poprzednia
+        </button>
+        <span>Strona {page}</span>
+        <button
+          onClick={() => setPage(p => p + 1)}
+          disabled={data.length < pageSize || loading}
+          className="filter-button"
+        >
+          Następna &gt;
+        </button>
+      </div>
     </div>
   );
 }

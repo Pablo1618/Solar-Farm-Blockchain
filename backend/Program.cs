@@ -9,6 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .WithExposedHeaders("X-Total-Count");
+    });
+});
+
 // Create MongoDB Client
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
@@ -25,7 +36,7 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 
     var mongoClientSettings = MongoClientSettings.FromUrl(new MongoUrl($"mongodb://{mongoUser}:{mongoPassword}@{mongoHost}:{mongoPort}"));
     var mongoClient = new MongoClient(mongoClientSettings);
-    mongoClient.DropDatabase(mongoDatabase);
+    // mongoClient.DropDatabase(mongoDatabase);
     return mongoClient;
 });
 
@@ -45,6 +56,7 @@ var app = builder.Build();
 // Initialize BackendService to force init mongo and mqtt
 var backend = app.Services.GetRequiredService<BackendService>();
 
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.MapGet("/dashboard", (BackendService backend) =>
@@ -54,15 +66,18 @@ app.MapGet("/dashboard", (BackendService backend) =>
 .WithName("Dashboard")
 .WithOpenApi();
 
-app.MapGet("/query", async (BackendService backend,[AsParameters] QueryParams queryParams) =>
+app.MapGet("/query", async (BackendService backend, HttpContext http, [AsParameters] QueryParams queryParams) =>
 {
+    var totalCount = await backend.GetTotalCountAsync(queryParams);
+    http.Response.Headers.Append("X-Total-Count", totalCount.ToString());
+
     var queryResult = await backend.GetDataAsync(queryParams);
     return Results.Ok(queryResult);
 })
 .WithName("Query")
 .WithOpenApi();
 
-app.MapGet("/csv", async (BackendService backend,[AsParameters] QueryParams queryParams) =>
+app.MapGet("/csv", async (BackendService backend, [AsParameters] QueryParams queryParams) =>
 {
     var queryResult = await backend.GetDataCsvAsync(queryParams);
     return Results.Text(queryResult, "text/csv", System.Text.Encoding.UTF8);

@@ -5,16 +5,18 @@ import './DataTable.css';
 interface DataTableRow {
   id: string;
   type: SensorType;
-  instance: number;
+  deviceName: string;
   value: number;
   timestamp: number;
 }
 
 interface DataTableProps {
   data: DataTableRow[];
+  sortDesc: boolean;
+  onSortToggle: () => void;
 }
 
-function DataTable({ data }: DataTableProps) {
+function DataTable({ data, sortDesc, onSortToggle }: DataTableProps) {
   const formatDateTime = (timestamp: number) => {
     const date = new Date(timestamp);
     return date.toLocaleString('pl-PL', {
@@ -39,17 +41,22 @@ function DataTable({ data }: DataTableProps) {
 
   return (
     <div className="data-table-container">
-      <div className="table-info">
-        <span className="record-count">Znaleziono rekordów: {data.length}</span>
-      </div>
-
       <div className="table-wrapper">
         <table className="data-table">
           <thead>
             <tr>
-              <th>Data i czas</th>
+              <th>
+                Data i czas
+                <button
+                  onClick={onSortToggle}
+                  className="sort-button"
+                  title={sortDesc ? "Sortuj rosnąco" : "Sortuj malejąco"}
+                >
+                  {sortDesc ? " \\/" : " /\\"}
+                </button>
+              </th>
               <th>Typ czujnika</th>
-              <th>Instancja</th>
+              <th>Urządzenie</th>
               <th>Wartość</th>
               <th>Jednostka</th>
             </tr>
@@ -60,7 +67,7 @@ function DataTable({ data }: DataTableProps) {
                 <td className="timestamp-cell">{formatDateTime(row.timestamp)}</td>
                 <td className="type-cell">{getSensorDisplayName(row.type)}</td>
                 <td className="instance-cell">
-                  <span className="instance-badge">#{row.instance}</span>
+                  <span className="instance-badge">{row.deviceName}</span>
                 </td>
                 <td className="value-cell">{row.value.toFixed(2)}</td>
                 <td className="unit-cell">{getSensorUnit(row.type)}</td>

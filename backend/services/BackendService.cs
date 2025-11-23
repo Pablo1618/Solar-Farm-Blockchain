@@ -56,7 +56,7 @@ class BackendService
         // Double select to make the enum a string :crying:
         var dashboardData = FotovoltanicDataCollection.AsQueryable()
                     .GroupBy(d => new { d.DeviceName, d.DataType })
-                    .Select(g => new 
+                    .Select(g => new
                     {
                         DeviceName = g.Key.DeviceName,
                         DataType = g.Key.DataType,
@@ -80,7 +80,7 @@ class BackendService
         return dashboardData;
     }
 
-    public async Task<IEnumerable<QueryDataDto>> GetDataAsync(QueryParams query)
+    private FilterDefinition<FotovoltanicData> BuildFilter(QueryParams query)
     {
         var filter = Builders<FotovoltanicData>.Filter.Empty;
 
@@ -95,6 +95,19 @@ class BackendService
 
         if (query.To.HasValue)
             filter &= Builders<FotovoltanicData>.Filter.Lte(x => x.Timestamp, query.To.Value);
+
+        return filter;
+    }
+
+    public async Task<long> GetTotalCountAsync(QueryParams query)
+    {
+        var filter = BuildFilter(query);
+        return await FotovoltanicDataCollection.CountDocumentsAsync(filter);
+    }
+
+    public async Task<IEnumerable<QueryDataDto>> GetDataAsync(QueryParams query)
+    {
+        var filter = BuildFilter(query);
 
         var find = FotovoltanicDataCollection.Find(filter);
 
@@ -116,12 +129,12 @@ class BackendService
         var results = await find.ToListAsync();
 
         return results.Select(x => new QueryDataDto
-            {
-                DeviceName = x.DeviceName,
-                DataType = x.DataType.ToString(),
-                Timestamp = x.Timestamp,
-                Data = x.Data
-            });
+        {
+            DeviceName = x.DeviceName,
+            DataType = x.DataType.ToString(),
+            Timestamp = x.Timestamp,
+            Data = x.Data
+        });
     }
 
     public async Task<string> GetDataJsonAsync(QueryParams query)
@@ -136,7 +149,7 @@ class BackendService
     public async Task<string> GetDataCsvAsync(QueryParams query)
     {
         var data = await GetDataAsync(query);
-        
+
         var sb = new StringBuilder();
         sb.AppendLine("DeviceName;DataType;Timestamp;Data");
 

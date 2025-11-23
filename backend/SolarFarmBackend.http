@@ -41,7 +41,7 @@ Accept: application/json
 
 ###
 
-GET {{SolarFarmBackend_HostAddress}}/query?deviceName=device4&dataType=Irradiance
+GET {{SolarFarmBackend_HostAddress}}/query?deviceName=dev01&dataType=Irradiance
 
 Accept: application/json
 

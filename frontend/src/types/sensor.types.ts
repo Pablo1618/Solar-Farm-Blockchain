@@ -20,6 +20,7 @@ export interface SensorData {
     id: string;
     type: SensorType;
     instance: number;
+    deviceName: string;
     readings: SensorReading[];
     currentValue: number;
     averageValue: number;

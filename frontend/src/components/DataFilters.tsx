@@ -5,11 +5,11 @@ interface DataFiltersProps {
   dateFrom: string;
   dateTo: string;
   sensorType: SensorType | 'all';
-  sensorInstance: number | 'all';
+  sensorInstance: string | 'all';
   onDateFromChange: (value: string) => void;
   onDateToChange: (value: string) => void;
   onSensorTypeChange: (value: SensorType | 'all') => void;
-  onSensorInstanceChange: (value: number | 'all') => void;
+  onSensorInstanceChange: (value: string | 'all') => void;
   onReset: () => void;
 }
 
@@ -72,16 +72,14 @@ function DataFilters({
           <select
             id="sensorInstance"
             value={sensorInstance}
-            onChange={(e) => onSensorInstanceChange(
-              e.target.value === 'all' ? 'all' : Number(e.target.value)
-            )}
+            onChange={(e) => onSensorInstanceChange(e.target.value)}
             className="filter-select"
           >
             <option value="all">Wszystkie instancje</option>
-            <option value="1">Instancja #1</option>
-            <option value="2">Instancja #2</option>
-            <option value="3">Instancja #3</option>
-            <option value="4">Instancja #4</option>
+            <option value="dev01">dev01</option>
+            <option value="dev02">dev02</option>
+            <option value="dev03">dev03</option>
+            <option value="dev04">dev04</option>
           </select>
         </div>
       </div>

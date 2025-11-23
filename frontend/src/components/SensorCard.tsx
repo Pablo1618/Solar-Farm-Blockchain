@@ -14,7 +14,7 @@ function SensorCard({ sensor }: SensorCardProps) {
         <div className="sensor-card">
             <div className="sensor-header">
                 <h3 className="sensor-title">{displayName}</h3>
-                <span className="sensor-instance">#{sensor.instance}</span>
+                <span className="sensor-instance">{sensor.deviceName}</span>
             </div>
             <div className="sensor-body">
                 <div className="sensor-value-container">
@@ -25,7 +25,7 @@ function SensorCard({ sensor }: SensorCardProps) {
                     </div>
                 </div>
                 <div className="sensor-value-container">
-                    <div className="sensor-label">Średnia (100 odczytów)</div>
+                    <div className="sensor-label">Średnia</div>
                     <div className="sensor-average-value">
                         {sensor.averageValue.toFixed(2)}
                         <span className="sensor-unit">{unit}</span>

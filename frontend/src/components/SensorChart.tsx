@@ -28,7 +28,8 @@ interface ChartDataPoint {
     timestamp: number;
     value: number;
     sensorId: string;
-    instance: number;
+    deviceName: string;
+    sensorType: SensorType;
 }
 
 interface SensorChartProps {
@@ -50,9 +51,17 @@ function SensorChart({ data, sensorType }: SensorChartProps) {
 
     const colors = [
         { border: 'rgb(74, 124, 44)', background: 'rgba(74, 124, 44, 0.2)' },
-        { border: 'rgb(107, 168, 62)', background: 'rgba(107, 168, 62, 0.2)' },
-        { border: 'rgb(45, 80, 22)', background: 'rgba(45, 80, 22, 0.2)' },
-        { border: 'rgb(139, 195, 74)', background: 'rgba(139, 195, 74, 0.2)' },
+        { border: 'rgb(54, 162, 235)', background: 'rgba(54, 162, 235, 0.2)' },
+        { border: 'rgb(255, 99, 132)', background: 'rgba(255, 99, 132, 0.2)' },
+        { border: 'rgb(255, 159, 64)', background: 'rgba(255, 159, 64, 0.2)' },
+        { border: 'rgb(153, 102, 255)', background: 'rgba(153, 102, 255, 0.2)' },
+        { border: 'rgb(255, 205, 86)', background: 'rgba(255, 205, 86, 0.2)' },
+        { border: 'rgb(201, 203, 207)', background: 'rgba(201, 203, 207, 0.2)' },
+        { border: 'rgb(0, 128, 128)', background: 'rgba(0, 128, 128, 0.2)' },
+        { border: 'rgb(128, 0, 128)', background: 'rgba(128, 0, 128, 0.2)' },
+        { border: 'rgb(128, 128, 0)', background: 'rgba(128, 128, 0, 0.2)' },
+        { border: 'rgb(0, 0, 128)', background: 'rgba(0, 0, 128, 0.2)' },
+        { border: 'rgb(128, 0, 0)', background: 'rgba(128, 0, 0, 0.2)' },
     ];
 
     const groupedData: Record<string, ChartDataPoint[]> = {};
@@ -67,12 +76,14 @@ function SensorChart({ data, sensorType }: SensorChartProps) {
         groupedData[key].sort((a, b) => a.timestamp - b.timestamp);
     });
 
-    const datasets = Object.entries(groupedData).map(([, points]) => {
-        const instance = points[0].instance;
-        const color = colors[(instance - 1) % colors.length];
+    const datasets = Object.entries(groupedData).map(([, points], index) => {
+        const deviceName = points[0].deviceName;
+        const sensorType = points[0].sensorType;
+        const sensorName = getSensorDisplayName(sensorType);
+        const color = colors[index % colors.length];
 
         return {
-            label: `Instancja #${instance}`,
+            label: `${sensorName} ${deviceName}`,
             data: points.map((point) => ({
                 x: point.timestamp,
                 y: point.value,

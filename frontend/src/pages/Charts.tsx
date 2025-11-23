@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
-import { useSensors } from '../context/useSensors';
+import { useState, useEffect, useCallback } from 'react';
 import type { SensorType } from '../types/sensor.types';
-import ChartFilters from '../components/ChartFilters';
+import { SENSOR_TYPES } from '../types/sensor.types';
+import DataFilters from '../components/DataFilters';
 import SensorChart from '../components/SensorChart';
 import './Charts.css';
 
@@ -9,12 +9,11 @@ interface ChartDataPoint {
     timestamp: number;
     value: number;
     sensorId: string;
-    instance: number;
+    deviceName: string;
+    sensorType: SensorType;
 }
 
 function Charts() {
-    const { sensors } = useSensors();
-
     const now = new Date();
     const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
@@ -30,7 +29,9 @@ function Charts() {
     const [dateFrom, setDateFrom] = useState(formatDateForInput(oneHourAgo));
     const [dateTo, setDateTo] = useState(formatDateForInput(now));
     const [sensorType, setSensorType] = useState<SensorType | 'all'>('all');
-    const [sensorInstance, setSensorInstance] = useState<number | 'all'>('all');
+    const [sensorInstance, setSensorInstance] = useState<string | 'all'>('all');
+    const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
+    const [loading, setLoading] = useState(false);
 
     const handleReset = () => {
         const newNow = new Date();
@@ -41,37 +42,79 @@ function Charts() {
         setSensorInstance('all');
     };
 
-    const chartData = useMemo(() => {
-        const dateFromTimestamp = new Date(dateFrom).getTime();
-        const dateToTimestamp = new Date(dateTo).getTime();
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const params = new URLSearchParams();
 
-        const allPoints: ChartDataPoint[] = [];
+            const fromDate = new Date(dateFrom);
+            const toDate = new Date(dateTo);
 
-        sensors.forEach((sensor) => {
-            sensor.readings.forEach((reading) => {
-                if (reading.timestamp < dateFromTimestamp || reading.timestamp > dateToTimestamp) {
-                    return;
+            params.append('from', fromDate.toISOString());
+            params.append('to', toDate.toISOString());
+            params.append('sortBy', 'Timestamp');
+            params.append('desc', 'false');
+            params.append('limit', '1000');
+
+            if (sensorInstance !== 'all') {
+                params.append('deviceName', sensorInstance);
+            }
+
+            if (sensorType !== 'all') {
+                let backendType = '';
+                switch (sensorType) {
+                    case SENSOR_TYPES.SOLAR_RADIATION: backendType = 'Irradiance'; break;
+                    case SENSOR_TYPES.PANEL_TEMPERATURE: backendType = 'PanelTemp'; break;
+                    case SENSOR_TYPES.AIR_TEMPERATURE: backendType = 'AirTemp'; break;
+                    case SENSOR_TYPES.POWER_GENERATION: backendType = 'Power'; break;
+                }
+                if (backendType) {
+                    params.append('dataType', backendType);
+                }
+            }
+
+            const response = await fetch(`/query?${params.toString()}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            const result = await response.json();
+
+            const mappedData: ChartDataPoint[] = result.map((item: any) => {
+                let type: SensorType = SENSOR_TYPES.SOLAR_RADIATION;
+                switch (item.dataType) {
+                    case 'IrradianceSensor': case 'Irradiance': type = SENSOR_TYPES.SOLAR_RADIATION; break;
+                    case 'PanelTempSensor': case 'PanelTemp': type = SENSOR_TYPES.PANEL_TEMPERATURE; break;
+                    case 'AirTempSensor': case 'AirTemp': type = SENSOR_TYPES.AIR_TEMPERATURE; break;
+                    case 'PowerMeter': case 'Power': type = SENSOR_TYPES.POWER_GENERATION; break;
                 }
 
-                if (sensorType !== 'all' && sensor.type !== sensorType) {
-                    return;
-                }
-
-                if (sensorInstance !== 'all' && sensor.instance !== sensorInstance) {
-                    return;
-                }
-
-                allPoints.push({
-                    timestamp: reading.timestamp,
-                    value: reading.value,
-                    sensorId: sensor.id,
-                    instance: sensor.instance,
-                });
+                return {
+                    timestamp: new Date(item.timestamp).getTime(),
+                    value: item.data || item.latest,
+                    sensorId: `${type}_${item.deviceName}`,
+                    deviceName: item.deviceName,
+                    sensorType: type,
+                };
             });
-        });
 
-        return allPoints;
-    }, [sensors, dateFrom, dateTo, sensorType, sensorInstance]);
+            mappedData.sort((a, b) => a.timestamp - b.timestamp);
+
+            setChartData(mappedData);
+        } catch (error) {
+            console.error('Error fetching chart data:', error);
+            setChartData([]);
+        } finally {
+            setLoading(false);
+        }
+    }, [dateFrom, dateTo, sensorType, sensorInstance]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            fetchData();
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [fetchData]);
 
     return (
         <div className="charts-page-container">
@@ -82,7 +125,7 @@ function Charts() {
                 </p>
             </div>
 
-            <ChartFilters
+            <DataFilters
                 dateFrom={dateFrom}
                 dateTo={dateTo}
                 sensorType={sensorType}
@@ -94,7 +137,11 @@ function Charts() {
                 onReset={handleReset}
             />
 
-            <SensorChart data={chartData} sensorType={sensorType} />
+            {loading ? (
+                <div className="loading-indicator">Ładowanie danych...</div>
+            ) : (
+                <SensorChart data={chartData} sensorType={sensorType} />
+            )}
         </div>
     );
 }
