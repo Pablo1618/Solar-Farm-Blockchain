@@ -1,6 +1,4 @@
-﻿using Backend.DataTypes;
-
-namespace DataGeneration
+﻿namespace DataGeneration
 {
     internal class FotovoltanicDataGenerator(IDevice device, Random random, DateTimeOffset startTimestamp, TimeSpan interval,
         double minValue, double maxValue)

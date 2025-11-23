@@ -1,6 +1,4 @@
-﻿using Backend.DataTypes;
-
-namespace DataGeneration
+﻿namespace DataGeneration
 {
     internal interface IDataPublisher
     {

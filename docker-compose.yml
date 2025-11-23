@@ -50,6 +50,20 @@ services:
     networks:
       - shared-network
 
+  generator:
+    build:
+      context: ./Generator
+      dockerfile: Dockerfile
+    image: solar-data-generator:latest
+    environment:
+      - MQTT_CLIENT_ID=DataGenerator
+      - MQTT_HOST=mqtt
+      - MQTT_PORT=1883
+    depends_on:
+      - mqtt
+      - backend
+    networks:
+      - shared-network
 
 volumes:
   mongo-data:
