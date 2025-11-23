@@ -1,0 +1,19 @@
+start dev01 Power 5 50 100
+start dev02 Power 5 250 350
+start dev03 Power 5 300 400
+start dev04 Power 5 300 450
+
+start dev01 AirTemp 5 5 15
+start dev02 AirTemp 5 10 20
+start dev03 AirTemp 5 20 30
+start dev04 AirTemp 5 25 30
+
+start dev01 PanelTemp 5 15 20
+start dev02 PanelTemp 5 40 60
+start dev03 PanelTemp 5 60 80
+start dev04 PanelTemp 5 70 90
+
+start dev01 Irradiance 5 200 400
+start dev02 Irradiance 5 500 700
+start dev03 Irradiance 5 600 800
+start dev04 Irradiance 5 700 900

@@ -10,8 +10,5 @@ RUN dotnet publish "DataGeneration.csproj" -c Release -o /app/publish --no-resto
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-COPY run_generator.sh /app/run_generator.sh
-# sed command to remove Windows carriage return characters - REMOVE THIS LINE IF NOT NEEDED
-RUN sed -i 's/\r$//' /app/run_generator.sh
-RUN chmod +x /app/run_generator.sh
-ENTRYPOINT ["/app/run_generator.sh"]
+COPY generator_commands /app/generator_commands
+ENTRYPOINT ["tail", "-f", "/dev/null"]
