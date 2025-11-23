@@ -99,7 +99,6 @@
   }
 }
 
-/* Pozostawiamy stare style dla innych stron */
 .page-container {
   min-height: calc(100vh - 80px);
   display: flex;

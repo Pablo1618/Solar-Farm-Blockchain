@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { SensorData } from '../types/sensor.types';
-import { SENSOR_TYPES } from '../types/sensor.types';
-import { initializeAllSensors, addSensorReading } from '../utils/sensorUtils';
+import { mapBackendDataToSensorData } from '../utils/sensorUtils';
+import type { BackendDashboardData } from '../utils/sensorUtils';
 import { SensorContext } from './SensorContextDefinition';
 
 export { SensorContext };
@@ -10,39 +10,34 @@ export { SensorContext };
 export function SensorProvider({ children }: { children: ReactNode }) {
     const [sensors, setSensors] = useState<SensorData[]>([]);
 
-    useEffect(() => {
-        const initialSensors = initializeAllSensors();
-        setSensors(initialSensors);
-    }, []);
+    const fetchSensors = async () => {
+        try {
+            const response = await fetch('/dashboard');
+            if (!response.ok) {
+                throw new Error('Failed to fetch dashboard data');
+            }
+            const data: BackendDashboardData[] = await response.json();
 
-    useEffect(() => {
-        if (sensors.length === 0) return;
+            const mappedSensors = data
+                .map(mapBackendDataToSensorData)
+                .filter((s): s is SensorData => s !== null);
 
-        const interval = setInterval(() => {
-            setSensors((prevSensors) => {
-                const solarRadiationSensors = prevSensors.filter(
-                    (s) => s.type === SENSOR_TYPES.SOLAR_RADIATION
-                );
-
-                return prevSensors.map((sensor) => {
-                    if (sensor.type === SENSOR_TYPES.SOLAR_RADIATION) {
-                        return addSensorReading(sensor);
-                    }
-
-                    const correspondingSolarSensor = solarRadiationSensors.find(
-                        (s) => s.instance === sensor.instance
-                    );
-                    const solarRadiation = correspondingSolarSensor
-                        ? correspondingSolarSensor.currentValue
-                        : 800;
-
-                    return addSensorReading(sensor, solarRadiation);
-                });
+            mappedSensors.sort((a, b) => {
+                if (a.type !== b.type) return a.type.localeCompare(b.type);
+                return a.instance - b.instance;
             });
-        }, 1000);
 
+            setSensors(mappedSensors);
+        } catch (error) {
+            console.error('Error fetching sensor data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchSensors();
+        const interval = setInterval(fetchSensors, 500);
         return () => clearInterval(interval);
-    }, [sensors.length]);
+    }, []);
 
     return (
         <SensorContext.Provider value={{ sensors }}>
