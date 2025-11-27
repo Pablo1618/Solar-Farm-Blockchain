@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { SensorType } from '../types/sensor.types';
 import { SENSOR_TYPES } from '../types/sensor.types';
 import DataFilters from '../components/DataFilters';
