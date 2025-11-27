@@ -37,6 +37,11 @@ function Navbar() {
                             Dane
                         </Link>
                     </li>
+                    <li>
+                        <Link to="/admin" className={isActive('/admin')}>
+                            Admin
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </nav>
