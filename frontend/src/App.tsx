@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SensorProvider } from './context/SensorContext';
 import Navbar from './components/Navbar';

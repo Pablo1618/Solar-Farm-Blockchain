@@ -51,6 +51,9 @@ class Program
                 case "list":
                     HandleList();
                     break;
+                case "start_all":
+                    await HandleStartAll(mqttClient);
+                    break;
                 default:
                     Console.WriteLine($"Unknown command: {command}");
                     break;
@@ -173,6 +176,35 @@ class Program
             Console.WriteLine($"\t{workerName}");
         }
     }
+    private static async Task HandleStartAll(IMqttClient mqttClient)
+    {
+        Console.WriteLine("Starting all predefined workers...");
+        var commands = new[]
+        {
+            "dev01 Power 3 50 100",
+            "dev02 Power 3 250 350",
+            "dev03 Power 3 300 400",
+            "dev04 Power 3 300 450",
+            "dev01 AirTemp 5 5 15",
+            "dev02 AirTemp 5 10 20",
+            "dev03 AirTemp 5 20 30",
+            "dev04 AirTemp 5 25 30",
+            "dev01 PanelTemp 5 15 20",
+            "dev02 PanelTemp 5 40 60",
+            "dev03 PanelTemp 5 60 80",
+            "dev04 PanelTemp 5 70 90",
+            "dev01 Irradiance 3 200 400",
+            "dev02 Irradiance 3 500 700",
+            "dev03 Irradiance 3 600 800",
+            "dev04 Irradiance 3 700 900"
+        };
+        foreach (var cmd in commands)
+        {
+            var args = cmd.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            await HandleStart(args, mqttClient);
+        }
+        Console.WriteLine("All workers started.");
+    }
     private static async Task RunWorkerAsync(string deviceName, DeviceType deviceType, TimeSpan interval,
         DateTimeOffset startTimestamp, double minValue, double maxValue, IMqttClient mqttClient, CancellationToken cancellationToken)
     {
@@ -187,9 +219,9 @@ class Program
                 var data = generator.Generate();
                 await publisher.PublishAsync(data, cancellationToken);
             }
-            
+
         }
-        catch (OperationCanceledException) {}
+        catch (OperationCanceledException) { }
         catch (Exception exception)
         {
             var workerName = GetWorkerName(deviceName, deviceType);
@@ -207,7 +239,7 @@ class Program
             var data = generator.Generate();
             await publisher.PublishAsync(data, cancellationToken);
         }
-        catch (OperationCanceledException) {}
+        catch (OperationCanceledException) { }
         catch (Exception exception)
         {
             Console.WriteLine($"Insert failed: {exception}");

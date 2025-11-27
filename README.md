@@ -10,26 +10,26 @@ Code for the .NET Web Services project in the 7th semester.
 
 ## How to build and run the applicaton
 
-#### 1. Pull this repository from GitHub
+### 1. Pull this repository from GitHub
 ```bash
 git clone https://github.com/Pablo1618/Solar-Farm-Blockchain
 ```
-#### 2. Build containers
+### 2. Build containers
 ```bash
 docker compose up --build
 ```
 > [!IMPORTANT]    
 > Wait for containers to build - it can take some time
-#### 3. Run frontend application
-In the `/frontend` folder run
-```bash
-npm run dev
-```
 
 Once the runtime starts, you can access the project at **http://localhost:5173/**
 
+### 3. Run data generator
+Inside the terminal of generator container:
+```bash
+dotnet /app/DataGeneration.dll
+start_all
+```
+Alternatively you can run sensors individually using commands listed in `Generator/generator_commands`
 > [!NOTE]   
-> You can find more information about backend and generator in README.md files in /backend and /Generator folders
-
-> [!TIP]
-> You can find example http requests in `backend/SolarFarmBackend.http`
+> You can find more information about backend and generator in `/backend/README.MD` and `/Generator/README.MD`
+> <br>Also you can find example http requests in `backend/SolarFarmBackend.http`

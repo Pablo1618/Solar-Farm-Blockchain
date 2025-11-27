@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSensors } from '../context/useSensors';
 import SensorCard from '../components/SensorCard';
 import { SENSOR_TYPES } from '../types/sensor.types';

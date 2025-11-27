@@ -1,3 +1,4 @@
+import React from 'react';
 import type { SensorType } from '../types/sensor.types';
 import { getSensorDisplayName, getSensorUnit } from '../utils/sensorUtils';
 import './DataTable.css';

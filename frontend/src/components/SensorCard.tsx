@@ -1,3 +1,4 @@
+import React from 'react';
 import type { SensorData } from '../types/sensor.types';
 import { getSensorDisplayName, getSensorUnit } from '../utils/sensorUtils';
 import './SensorCard.css';
