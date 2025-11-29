@@ -2,6 +2,7 @@ using MongoDB.Driver;
 using MQTTnet;
 using Backend;
 using Backend.DataTypes;
+using SolarFarmBackend.blockchain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,8 +52,11 @@ builder.Services.AddSingleton<IMqttClient>(sp =>
 
 builder.Services.AddSingleton<BackendService>();
 
+builder.Services.AddSingleton<BlockchainService>();
+
 var app = builder.Build();
 
+var blockchain = app.Services.GetRequiredService<BlockchainService>();
 // Initialize BackendService to force init mongo and mqtt
 var backend = app.Services.GetRequiredService<BackendService>();
 
