@@ -1,2 +1,4 @@
 ﻿Strona na której można obczaić API do Sepolia: https://chainlist.org/?search=Sepolia&testnets=true
 Klucz prywatny konta gdzie jest krypto: 0xc2af33e1212b9d16de61540cd1133912ef3bc9b391421b029a60256d1637f75b
+
+Adres Contract: 0x5f82cba1e72ac9dd9830184cf7f21128a00c64fd
