@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Admin.css';
 
 interface SensorStatus {
-    deviceName: string;
+    sensorId: string;
     walletAddress: string;
     tokenBalance: number;
 }
@@ -10,19 +10,6 @@ interface SensorStatus {
 function Admin() {
     const [sensors, setSensors] = useState<SensorStatus[]>([]);
     const [loading, setLoading] = useState(true);
-
-    const generateWalletAddress = () => {
-        const chars = '0123456789abcdef';
-        let address = '0x';
-        for (let i = 0; i < 40; i++) {
-            address += chars[Math.floor(Math.random() * chars.length)];
-        }
-        return address;
-    };
-
-    const generateTokenBalance = () => {
-        return Math.floor(Math.random() * 1000) + Math.random();
-    };
 
     useEffect(() => {
         const fetchSensors = async () => {
@@ -34,18 +21,13 @@ function Admin() {
                 }
                 const data = await response.json();
 
-                const uniqueDevices = new Set<string>();
-                data.forEach((item: { deviceName: string }) => {
-                    uniqueDevices.add(item.deviceName);
-                });
-
-                const sensorStatuses: SensorStatus[] = Array.from(uniqueDevices).map(deviceName => ({
-                    deviceName,
-                    walletAddress: generateWalletAddress(),
-                    tokenBalance: generateTokenBalance(),
+                const sensorStatuses: SensorStatus[] = data.map((item: { dataType: string; deviceName: string }) => ({
+                    sensorId: `${item.dataType}_${item.deviceName}`,
+                    walletAddress: 'TODO',
+                    tokenBalance: 0,
                 }));
 
-                sensorStatuses.sort((a, b) => a.deviceName.localeCompare(b.deviceName));
+                sensorStatuses.sort((a, b) => a.sensorId.localeCompare(b.sensorId));
 
                 setSensors(sensorStatuses);
             } catch (error) {
@@ -97,8 +79,8 @@ function Admin() {
                         </thead>
                         <tbody>
                             {sensors.map((sensor) => (
-                                <tr key={sensor.deviceName}>
-                                    <td className="device-name">{sensor.deviceName}</td>
+                                <tr key={sensor.sensorId}>
+                                    <td className="device-name">{sensor.sensorId}</td>
                                     <td className="wallet-address">
                                         <code>{sensor.walletAddress}</code>
                                     </td>

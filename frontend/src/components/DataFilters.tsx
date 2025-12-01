@@ -7,6 +7,7 @@ interface DataFiltersProps {
   dateTo: string;
   sensorType: SensorType | 'all';
   sensorInstance: string | 'all';
+  availableInstances: string[];
   onDateFromChange: (value: string) => void;
   onDateToChange: (value: string) => void;
   onSensorTypeChange: (value: SensorType | 'all') => void;
@@ -19,6 +20,7 @@ function DataFilters({
   dateTo,
   sensorType,
   sensorInstance,
+  availableInstances,
   onDateFromChange,
   onDateToChange,
   onSensorTypeChange,
@@ -77,10 +79,11 @@ function DataFilters({
             className="filter-select"
           >
             <option value="all">Wszystkie instancje</option>
-            <option value="dev01">dev01</option>
-            <option value="dev02">dev02</option>
-            <option value="dev03">dev03</option>
-            <option value="dev04">dev04</option>
+            {availableInstances.map((instance) => (
+              <option key={instance} value={instance}>
+                {instance}
+              </option>
+            ))}
           </select>
         </div>
       </div>
