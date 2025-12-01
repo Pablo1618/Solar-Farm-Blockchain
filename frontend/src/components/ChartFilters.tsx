@@ -6,11 +6,12 @@ interface ChartFiltersProps {
     dateFrom: string;
     dateTo: string;
     sensorType: SensorType | 'all';
-    sensorInstance: number | 'all';
+    sensorInstance: string | 'all';
+    availableInstances: string[];
     onDateFromChange: (value: string) => void;
     onDateToChange: (value: string) => void;
     onSensorTypeChange: (value: SensorType | 'all') => void;
-    onSensorInstanceChange: (value: number | 'all') => void;
+    onSensorInstanceChange: (value: string | 'all') => void;
     onReset: () => void;
 }
 
@@ -19,6 +20,7 @@ function ChartFilters({
     dateTo,
     sensorType,
     sensorInstance,
+    availableInstances,
     onDateFromChange,
     onDateToChange,
     onSensorTypeChange,
@@ -73,16 +75,15 @@ function ChartFilters({
                     <select
                         id="chartSensorInstance"
                         value={sensorInstance}
-                        onChange={(e) => onSensorInstanceChange(
-                            e.target.value === 'all' ? 'all' : Number(e.target.value)
-                        )}
+                        onChange={(e) => onSensorInstanceChange(e.target.value)}
                         className="filter-select"
                     >
                         <option value="all">Wszystkie instancje</option>
-                        <option value="1">Instancja #1</option>
-                        <option value="2">Instancja #2</option>
-                        <option value="3">Instancja #3</option>
-                        <option value="4">Instancja #4</option>
+                        {availableInstances.map((instance) => (
+                            <option key={instance} value={instance}>
+                                {instance}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>

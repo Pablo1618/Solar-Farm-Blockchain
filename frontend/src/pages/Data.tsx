@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import type { SensorType } from '../types/sensor.types';
 import { SENSOR_TYPES } from '../types/sensor.types';
 import { getSensorDisplayName, getSensorUnit } from '../utils/sensorUtils';
+import { useSensors } from '../context/useSensors';
 import DataFilters from '../components/DataFilters';
 import DataTable from '../components/DataTable';
 import './Data.css';
@@ -15,6 +16,7 @@ interface DataTableRow {
 }
 
 function Data() {
+  const { availableDeviceNames } = useSensors();
   const now = new Date();
   const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
@@ -195,6 +197,7 @@ function Data() {
         dateTo={dateTo}
         sensorType={sensorType}
         sensorInstance={sensorInstance}
+        availableInstances={availableDeviceNames}
         onDateFromChange={(d) => { setDateFrom(d); setPage(1); }}
         onDateToChange={(d) => { setDateTo(d); setPage(1); }}
         onSensorTypeChange={(t) => { setSensorType(t); setPage(1); }}

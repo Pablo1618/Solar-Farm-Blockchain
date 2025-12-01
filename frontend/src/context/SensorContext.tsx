@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import type { SensorData } from '../types/sensor.types';
 import { mapBackendDataToSensorData } from '../utils/sensorUtils';
@@ -39,8 +39,13 @@ export function SensorProvider({ children }: { children: ReactNode }) {
         return () => clearInterval(interval);
     }, []);
 
+    const availableDeviceNames = useMemo(() => {
+        const uniqueNames = [...new Set(sensors.map(s => s.deviceName))];
+        return uniqueNames.sort();
+    }, [sensors]);
+
     return (
-        <SensorContext.Provider value={{ sensors }}>
+        <SensorContext.Provider value={{ sensors, availableDeviceNames }}>
             {children}
         </SensorContext.Provider>
     );

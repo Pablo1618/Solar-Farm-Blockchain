@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { SensorType } from '../types/sensor.types';
 import { SENSOR_TYPES } from '../types/sensor.types';
+import { useSensors } from '../context/useSensors';
 import DataFilters from '../components/DataFilters';
 import SensorChart from '../components/SensorChart';
 import './Charts.css';
@@ -14,6 +15,7 @@ interface ChartDataPoint {
 }
 
 function Charts() {
+    const { availableDeviceNames } = useSensors();
     const now = new Date();
     const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
@@ -130,6 +132,7 @@ function Charts() {
                 dateTo={dateTo}
                 sensorType={sensorType}
                 sensorInstance={sensorInstance}
+                availableInstances={availableDeviceNames}
                 onDateFromChange={setDateFrom}
                 onDateToChange={setDateTo}
                 onSensorTypeChange={setSensorType}
