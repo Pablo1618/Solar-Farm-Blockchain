@@ -4,6 +4,8 @@ using Backend.DataTypes;
 using MongoDB.Driver;
 using MQTTnet;
 using System.Text.Json;
+using SolarFarmBackend.blockchain;
+using SolarFarmBackend.dtos;
 
 namespace Backend;
 
@@ -14,15 +16,17 @@ class BackendService
 
     private IMqttClient _mqttClient;
     private IMongoClient _mongoClient;
+    private BlockchainService _blockchainService;
 
     public IMongoCollection<FotovoltanicData> FotovoltanicDataCollection { get; set; }
 
     private readonly ILogger<BackendService> _logger;
 
-    public BackendService(IMqttClient mqttClient, IMongoClient mongoClient, ILogger<BackendService> logger)
+    public BackendService(IMqttClient mqttClient, IMongoClient mongoClient, ILogger<BackendService> logger, BlockchainService blockchainService)
     {
         _mqttClient = mqttClient;
         _mongoClient = mongoClient;
+        _blockchainService = blockchainService;
         _logger = logger;
 
         FotovoltanicDataCollection = _mongoClient.GetDatabase(_mongoDbName).GetCollection<FotovoltanicData>("FotovoltanicData");
@@ -78,6 +82,37 @@ class BackendService
                     .ToList();
 
         return dashboardData;
+    }
+
+    public async Task<List<BlockchainWalletListViewDTO>> GetBlockchainWalletListData()
+    {
+        // Double select to make the enum a string :crying:
+        var blockchainWalletArrayData = FotovoltanicDataCollection.AsQueryable()
+                    .GroupBy(d => new { d.DeviceName, d.DataType })
+                    .Select(g => new
+                    {
+                        DeviceName = g.Key.DeviceName,
+                        DataType = g.Key.DataType,
+                    })
+                    .ToList()
+                    .Select(async (d) =>
+                    {
+                        var deviceUniqueName = d.DataType.ToString() + "_" + d.DeviceName.ToString();
+                        var account = _blockchainService.StringToAccount(deviceUniqueName);
+                        var tokenAmount = await _blockchainService.GetAccountBalance(account.Address);
+                        return new BlockchainWalletListViewDTO
+                        {
+                            dataType_deviceName = deviceUniqueName,
+                            walletAddress = account.Address,
+                            tokenBalance = tokenAmount.ToString()
+                        };
+                    })
+                    .ToArray();
+        await Task.WhenAll(blockchainWalletArrayData);
+
+        var blockchainWalletListData = blockchainWalletArrayData.Select((t) => t.Result).ToList();
+        blockchainWalletListData.Sort((a,b) => { return a.dataType_deviceName.CompareTo(b.dataType_deviceName); });
+        return blockchainWalletListData;
     }
 
     private FilterDefinition<FotovoltanicData> BuildFilter(QueryParams query)
@@ -186,6 +221,15 @@ class BackendService
             Data = payload.Data
         };
 
+        var uniqueDeviceName = e.ApplicationMessage.Topic.Split('/')[2] + "_" + e.ApplicationMessage.Topic.Split('/')[1];
+        var account = _blockchainService.StringToAccount(uniqueDeviceName);
+
+        _blockchainService.TransferToAdress(account.Address, 1);
+
+        //var transferTask = _blockchainService.TransferToAdress(account.Address, 1);
+        //var insertToCollectionTask = FotovoltanicDataCollection.InsertOneAsync(data);
+        //Task[] tasks = [transferTask, insertToCollectionTask];
+        //await Task.WhenAll(tasks);
         await FotovoltanicDataCollection.InsertOneAsync(data);
     }
 }

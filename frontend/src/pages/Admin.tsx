@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './Admin.css';
 
+interface BlockchainWalletData {
+    dataType_deviceName: string;
+    walletAddress: string;
+    tokenBalance: string;
+}
+
 interface SensorStatus {
     sensorId: string;
     walletAddress: string;
@@ -15,16 +21,16 @@ function Admin() {
         const fetchSensors = async () => {
             setLoading(true);
             try {
-                const response = await fetch('/dashboard');
+                const response = await fetch('/blockchain/sensors-status');
                 if (!response.ok) {
                     throw new Error('Failed to fetch sensors');
                 }
-                const data = await response.json();
+                const data: BlockchainWalletData[] = await response.json();
 
-                const sensorStatuses: SensorStatus[] = data.map((item: { dataType: string; deviceName: string }) => ({
-                    sensorId: `${item.dataType}_${item.deviceName}`,
-                    walletAddress: 'TODO',
-                    tokenBalance: 0,
+                const sensorStatuses: SensorStatus[] = data.map((item) => ({
+                    sensorId: item.dataType_deviceName,
+                    walletAddress: item.walletAddress,
+                    tokenBalance: parseFloat(item.tokenBalance) || 0,
                 }));
 
                 sensorStatuses.sort((a, b) => a.sensorId.localeCompare(b.sensorId));

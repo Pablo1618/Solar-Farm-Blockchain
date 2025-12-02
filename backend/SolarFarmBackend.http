@@ -52,3 +52,8 @@ GET {{SolarFarmBackend_HostAddress}}/csv?deviceName=device4&dataType=2
 Accept: application/json
 
 ###
+
+GET {{SolarFarmBackend_HostAddress}}/blockchain/sensors-status
+Accept: application/json
+
+###
