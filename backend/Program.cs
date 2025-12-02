@@ -70,6 +70,13 @@ app.MapGet("/dashboard", (BackendService backend) =>
 .WithName("Dashboard")
 .WithOpenApi();
 
+app.MapGet("/blockchain/sensors-status", async (BackendService backend) =>
+{
+    return Results.Ok(await backend.GetBlockchainWalletListData());
+})
+.WithName("Blockchain")
+.WithOpenApi();
+
 app.MapGet("/query", async (BackendService backend, HttpContext http, [AsParameters] QueryParams queryParams) =>
 {
     var totalCount = await backend.GetTotalCountAsync(queryParams);
